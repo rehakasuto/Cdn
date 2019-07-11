@@ -1,0 +1,705 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DbManager</name>
+    </assembly>
+    <members>
+        <member name="T:DbManager.App_Start.UnityConfig">
+            <summary>
+            Specifies the Unity configuration for the main container.
+            </summary>
+        </member>
+        <member name="M:DbManager.App_Start.UnityConfig.GetConfiguredContainer">
+            <summary>
+            Gets the configured Unity container.
+            </summary>
+        </member>
+        <member name="M:DbManager.App_Start.UnityConfig.RegisterTypes(Microsoft.Practices.Unity.IUnityContainer)">
+            <summary>Registers the type mappings with the Unity container.</summary>
+            <param name="container">The unity container to configure.</param>
+            <remarks>There is no need to register concrete types such as controllers or API controllers (unless you want to 
+            change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.</remarks>
+        </member>
+        <member name="T:DbManager.App_Start.UnityWebActivator">
+            <summary>Provides the bootstrapping for integrating Unity with ASP.NET MVC.</summary>
+        </member>
+        <member name="M:DbManager.App_Start.UnityWebActivator.Start">
+            <summary>Integrates Unity when the application starts.</summary>
+        </member>
+        <member name="M:DbManager.App_Start.UnityWebActivator.Shutdown">
+            <summary>Disposes the Unity container when the application is shut down.</summary>
+        </member>
+        <member name="T:DbManager.Entity.Abstracts.DbTable">
+            <summary>
+            Read only and Undeletable DB table abstract
+            </summary>
+        </member>
+        <member name="P:DbManager.Entity.Abstracts.DbTable.id">
+            <summary>
+            row id
+            </summary>
+        </member>
+        <member name="P:DbManager.Entity.Abstracts.DbTable.createdDate">
+            <summary>
+            row creation date
+            </summary>
+        </member>
+        <member name="P:DbManager.Entity.Abstracts.DbTable.modelType">
+            <summary>
+            child object type
+            </summary>
+        </member>
+        <member name="P:DbManager.Entity.Abstracts.DbTable.modelName">
+            <summary>
+            child object class name
+            </summary>
+        </member>
+        <member name="P:DbManager.Entity.Abstracts.DbTable.propertyManager">
+            <summary>
+            refernace of propertyMameger of modelType
+            </summary>
+        </member>
+        <member name="M:DbManager.Entity.Abstracts.DbTable.#ctor">
+            <summary>
+            set createdDate
+            </summary>
+        </member>
+        <member name="M:DbManager.Entity.Abstracts.DbTable.ValidateEntityState(System.Data.Entity.Infrastructure.DbEntityEntry,DbManager.DbTableContext)">
+            <summary>
+            validates entity state of entry
+            checks that entry id modified or deleted
+            </summary>
+            <param name="entry">entry of entity</param>
+            <param name="context">context of entry</param>
+            <returns>validation result</returns>
+        </member>
+        <member name="M:DbManager.Entity.Abstracts.DbTable.ValidateEntityStateByPropertyManager(System.Data.Entity.Infrastructure.DbEntityEntry,DbManager.DbTableContext)">
+            <summary>
+            validates entity state of relational entries with this entry
+            </summary>
+            <param name="entry">entry of entity</param>
+            <param name="context">context of entry</param>
+            <returns></returns>
+        </member>
+        <member name="M:DbManager.Entity.Abstracts.DbTable.CheckEntityStateIsModified(System.Data.Entity.Infrastructure.DbEntityEntry)">
+            <summary>
+            check the entry state is modified
+            </summary>
+            <param name="entry">entry of entity</param>
+            <returns>null if it is not modified</returns>
+        </member>
+        <member name="M:DbManager.Entity.Abstracts.DbTable.CheckEntityStateIsDeleted(System.Data.Entity.Infrastructure.DbEntityEntry,DbManager.DbTableContext)">
+            <summary>
+            check the entry state is deleted
+            </summary>
+            <param name="entry">>entry of entity</param>
+            <returns>null if it is not deleted</returns>
+        </member>
+        <member name="T:DbManager.Entity.Abstracts.DeletableDbTable">
+            <summary>
+            Modifiable and Deletable DB table abstract
+            Deletable mean is that mark as deleted
+            </summary>
+        </member>
+        <member name="P:DbManager.Entity.Abstracts.DeletableDbTable.isDeleted">
+            <summary>
+            is row marked as deleted 
+            </summary>
+        </member>
+        <member name="M:DbManager.Entity.Abstracts.DeletableDbTable.#ctor">
+            <summary>
+            set is deleted as false
+            </summary>
+        </member>
+        <member name="M:DbManager.Entity.Abstracts.DeletableDbTable.MarkAsDeleted(DbManager.DbTableContext)">
+            <summary>
+            set row as deleted
+            </summary>
+        </member>
+        <member name="M:DbManager.Entity.Abstracts.DeletableDbTable.MarkRelationalModelsAsDeleted">
+            <summary>
+            need to mark as deleted all relational tables 
+            ( InverseProperty, not froeing key)
+            </summary>
+        </member>
+        <member name="M:DbManager.Entity.Abstracts.DeletableDbTable.CheckEntityStateIsDeleted(System.Data.Entity.Infrastructure.DbEntityEntry,DbManager.DbTableContext)">
+            <summary>
+            if the entry state is deleted, mark entity as deleted and change the state to modified
+            </summary>
+            <param name="entry">>entry of entity</param>
+            <returns>null</returns>
+        </member>
+        <member name="T:DbManager.Entity.Abstracts.ModifiableDbTable">
+            <summary>
+            Modifiable and Undeletable DB table abstract
+            </summary>
+        </member>
+        <member name="P:DbManager.Entity.Abstracts.ModifiableDbTable.modifiedDate">
+            <summary>
+            row modified date
+            </summary>
+        </member>
+        <member name="M:DbManager.Entity.Abstracts.ModifiableDbTable.#ctor">
+            <summary>
+            set modified date
+            </summary>
+        </member>
+        <member name="M:DbManager.Entity.Abstracts.ModifiableDbTable.CheckEntityStateIsModified(System.Data.Entity.Infrastructure.DbEntityEntry)">
+            <summary>
+            if the entry state is modified, updates the modified date
+            </summary>
+            <param name="entry">entry of entity</param>
+            <returns>null</returns>
+        </member>
+        <member name="T:DbManager.Entity.Attributes.DeleteInverseIfSatisfiedConditionOnCascadeAttribute">
+            <summary>
+            when the current object is deleted and the condition is satisfied, then the referanced objects should be deleted
+            </summary>
+        </member>
+        <member name="M:DbManager.Entity.Attributes.DeleteInverseIfSatisfiedConditionOnCascadeAttribute.#ctor(System.Type,System.String)">
+            <summary>
+            Initializes a new instance of the DeleteInverseIfSatisfiedConditionOnCascadeAttribute class
+            using the specified property.
+            </summary>
+            <param name="functionDelegateType">The System.Type of delegate to create</param>
+            <param name="functionDelegateName">The string containing the name of the public method to get 
+               The System.Reflection.MethodInfo describing the static or instance method
+                the delegate is to represent. Only static methods are supported in the .NET
+               Framework version 1.0 and 1.1.</param>
+            <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="P:DbManager.Entity.Attributes.DeleteInverseIfSatisfiedConditionOnCascadeAttribute.functionDelegate">
+            <summary>
+            Condition function which will check the given entity satisfies the conditions
+            </summary>
+        </member>
+        <member name="M:DbManager.Entity.Attributes.DeleteInverseIfSatisfiedConditionOnCascadeAttribute.CheckConditionIsSatisfied(DbManager.Entity.Interfaces.IDbTable)">
+            <summary>
+            Invokes given function delegate with given entity
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="T:DbManager.Entity.Attributes.DeleteInverseOnCascadeAttribute">
+            <summary>
+            the referanced object denoted by FK relationship 
+            the referanced object should be deleted when the this object is deleted
+            </summary>
+        </member>
+        <member name="M:DbManager.Entity.Attributes.DeleteInverseOnCascadeAttribute.#ctor">
+            <summary>
+            Initializes a new instance of the DeleteInverseOnCascadeAttribute class
+            using the specified property.
+            </summary>
+        </member>
+        <member name="T:DbManager.Entity.Attributes.DeleteThisIfSatisfiedConditionOnCascadeAttribute">
+            <summary>
+            when the referanced object is deleted and the condition is satisfied, then this object should be deleted
+            </summary>
+        </member>
+        <member name="M:DbManager.Entity.Attributes.DeleteThisIfSatisfiedConditionOnCascadeAttribute.#ctor(System.Type,System.String)">
+            <summary>
+            Initializes a new instance of the DeleteThisIfSatisfiedConditionOnCascadeAttribute class
+            using the specified property.
+            </summary>
+            <param name="functionDelegateType">The System.Type of delegate to create</param>
+            <param name="functionDelegateName">The string containing the name of the public method to get 
+               The System.Reflection.MethodInfo describing the static or instance method
+               the delegate is to represent. Only static methods are supported in the .NET
+               Framework version 1.0 and 1.1.</param>
+            <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="P:DbManager.Entity.Attributes.DeleteThisIfSatisfiedConditionOnCascadeAttribute.functionDelegate">
+            <summary>
+            Condition function which will check the given entity satisfies the conditions
+            </summary>
+        </member>
+        <member name="M:DbManager.Entity.Attributes.DeleteThisIfSatisfiedConditionOnCascadeAttribute.CheckConditionIsSatisfied(DbManager.Entity.Interfaces.IDbTable)">
+            <summary>
+            Invokes given function delegate with given entity
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="T:DbManager.Entity.Attributes.NotDeleteThisOnCascadeAttribute">
+            <summary>
+            the referanced object denoted by FK relationship 
+            this should not be deleted when the parent object is deleted
+            </summary>
+        </member>
+        <member name="M:DbManager.Entity.Attributes.NotDeleteThisOnCascadeAttribute.#ctor">
+            <summary>
+            Initializes a new instance of the NotThisDeleteOnCascadeAttribute class
+            using the specified property.
+            </summary>
+        </member>
+        <member name="T:DbManager.Entity.DbTablePropertyManager`1">
+            <summary>
+            Property Manager of the specified Entity type
+            </summary>
+            <typeparam name="TEntity">Entity Type that will be managed by manager</typeparam>
+        </member>
+        <member name="M:DbManager.Entity.DbTablePropertyManager`1.#ctor">
+            <summary>
+            Creates an instance of a DbTablePropertyManager
+            </summary>
+        </member>
+        <member name="M:DbManager.Entity.DbTablePropertyManager`1.Init">
+            <summary>
+            initilize the foreignKey and Inverse properties relations
+            </summary>
+        </member>
+        <member name="M:DbManager.Entity.DbTablePropertyManager`1.GetPropertyManager(System.Type)">
+            <summary>
+            Resolve the DbTablePropertyManager from Unity
+            </summary>
+            <param name="propertyType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DbManager.Entity.DbTablePropertyManager`1.RegisterInverseProperty(System.Reflection.PropertyInfo,System.Type,System.String)">
+            <summary>
+            Registers inverse property of related entity
+            </summary>
+            <param name="propertyInfo">Info of property in related entity</param>
+            <param name="entityType">Type of related entity</param>
+        </member>
+        <member name="M:DbManager.Entity.DbTablePropertyManager`1.DeleteReferanceEntities(System.Object,DbManager.DbTableContext)">
+            <summary>
+            delete entities referanced by foreignKey and Inverse relationship
+            </summary>
+            <param name="entityObject">entity whose referanced entities will be deleted</param>
+            <param name="context">context that changes will be saved on</param>
+        </member>
+        <member name="T:DbManager.Entity.DbTableSet`1">
+            <summary>
+            manipulates the collection of entities of specified type in the context
+            </summary>
+            <typeparam name="TEntity">The type that defines the set</typeparam>
+        </member>
+        <member name="M:DbManager.Entity.DbTableSet`1.#ctor(System.Data.Entity.IDbSet{`0},DbManager.DbTableContext,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            Creates an instance of a DbTableSet
+            </summary>
+            <param name="set">collection of entities will be manipulated</param>
+            <param name="context">context of entity collection</param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.Exception">PropertyManagerNotFound exception</exception>
+        </member>
+        <member name="M:DbManager.Entity.DbTableSet`1.ThrowIfEntityDoesNotMatchFilter(`0)">
+            <summary>
+            Checks the Entity is matching the filter
+            </summary>
+            <param name="entity"></param>
+        </member>
+        <member name="M:DbManager.Entity.DbTableSet`1.ThrowIfEntitiesDoesNotMatchFilter(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Checks the Entities are matching the filter
+            </summary>
+            <param name="entities"></param>
+        </member>
+        <member name="M:DbManager.Entity.DbTableSet`1.GetEnumerator">
+            <summary>Returns an enumerator that iterates through the collection.</summary>
+            <returns>A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.</returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="M:DbManager.Entity.DbTableSet`1.System#Collections#IEnumerable#GetEnumerator">
+            <summary>Returns an enumerator that iterates through a collection.</summary>
+            <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="P:DbManager.Entity.DbTableSet`1.Expression">
+            <summary>Gets the expression tree that is associated with the instance of <see cref="T:System.Linq.IQueryable" />.</summary>
+            <returns>The <see cref="T:System.Linq.Expressions.Expression" /> that is associated with this instance of <see cref="T:System.Linq.IQueryable" />.</returns>
+        </member>
+        <member name="P:DbManager.Entity.DbTableSet`1.ElementType">
+            <summary>Gets the type of the element(s) that are returned when the expression tree associated with this instance of <see cref="T:System.Linq.IQueryable" /> is executed.</summary>
+            <returns>A <see cref="T:System.Type" /> that represents the type of the element(s) that are returned when the expression tree associated with this object is executed.</returns>
+        </member>
+        <member name="P:DbManager.Entity.DbTableSet`1.Provider">
+            <summary>Gets the query provider that is associated with this data source.</summary>
+            <returns>The <see cref="T:System.Linq.IQueryProvider" /> that is associated with this data source.</returns>
+        </member>
+        <member name="M:DbManager.Entity.DbTableSet`1.Find(System.Object[])">
+            <summary>
+            Finds an entity with the given primary key values.
+            If an entity with the given primary key values exists in the context, then it is
+            returned immediately without making a request to the store.  Otherwise, a request
+            is made to the store for an entity with the given primary key values and this entity,
+            if found, is attached to the context and returned.  If no entity is found in the
+            context or the store, then null is returned.
+            </summary>
+            <remarks>
+            The ordering of composite key values is as defined in the EDM, which is in turn as defined in
+            the designer, by the Code First fluent API, or by the DataMember attribute.
+            </remarks>
+            <param name="keyValues"> The values of the primary key for the entity to be found. </param>
+            <returns> The entity found, or null. </returns>
+        </member>
+        <member name="M:DbManager.Entity.DbTableSet`1.Add(`0)">
+            <summary>
+            Adds the given entity to the context underlying the set in the Added state such that it will
+            be inserted into the database when SaveChanges is called.
+            </summary>
+            <param name="entity"> The entity to add. </param>
+            <returns> The entity. </returns>
+            <remarks>
+            Note that entities that are already in the context in some other state will have their state set
+            to Added.  Add is a no-op if the entity is already in the context in the Added state.
+            </remarks>
+        </member>
+        <member name="M:DbManager.Entity.DbTableSet`1.AddRange(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Adds the given collection of entities into context 
+            </summary>
+            <param name="entities">The collection of entities to add</param>
+            <returns>The collection of entities</returns>
+        </member>
+        <member name="M:DbManager.Entity.DbTableSet`1.Remove(`0)">
+            <summary>
+            Marks the given entity as Deleted such that it will be deleted from the database when SaveChanges
+            is called.  Note that the entity must exist in the context in some other state before this method
+            is called.
+            </summary>
+            <param name="entity"> The entity to remove. </param>
+            <returns> The entity. </returns>
+            <remarks>
+            Note that if the entity exists in the context in the Added state, then this method
+            will cause it to be detached from the context.  This is because an Added entity is assumed not to
+            exist in the database such that trying to delete it does not make sense.
+            </remarks>
+        </member>
+        <member name="M:DbManager.Entity.DbTableSet`1.RemoveRange(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Removes the given collection of entities from the context
+            </summary>
+            <param name="entities">The collection of entities to remove</param>
+            <returns>The collection of entities</returns>
+        </member>
+        <member name="M:DbManager.Entity.DbTableSet`1.Attach(`0)">
+            <summary>
+            Attaches the given entity to the context underlying the set.  That is, the entity is placed
+            into the context in the Unchanged state, just as if it had been read from the database.
+            </summary>
+            <param name="entity"> The entity to attach. </param>
+            <returns> The entity. </returns>
+            <remarks>
+            Attach is used to repopulate a context with an entity that is known to already exist in the database.
+            SaveChanges will therefore not attempt to insert an attached entity into the database because
+            it is assumed to already be there.
+            Note that entities that are already in the context in some other state will have their state set
+            to Unchanged.  Attach is a no-op if the entity is already in the context in the Unchanged state.
+            </remarks>
+        </member>
+        <member name="M:DbManager.Entity.DbTableSet`1.Create">
+            <summary>
+            Creates a new instance of an entity for the type of this set.
+            Note that this instance is NOT added or attached to the set.
+            The instance returned will be a proxy if the underlying context is configured to create
+            proxies and the entity type meets the requirements for creating a proxy.
+            </summary>
+            <returns> The entity instance, which may be a proxy. </returns>
+        </member>
+        <member name="M:DbManager.Entity.DbTableSet`1.Create``1">
+            <summary>
+            Creates a new instance of an entity for the type of this set or for a type derived
+            from the type of this set.
+            Note that this instance is NOT added or attached to the set.
+            The instance returned will be a proxy if the underlying context is configured to create
+            proxies and the entity type meets the requirements for creating a proxy.
+            </summary>
+            <typeparam name="TDerivedEntity"> The type of entity to create. </typeparam>
+            <returns> The entity instance, which may be a proxy. </returns>
+        </member>
+        <member name="P:DbManager.Entity.DbTableSet`1.System#Data#Entity#IDbSet{TEntity}#Local">
+            <summary>
+            Gets an <see cref="T:System.Collections.ObjectModel.ObservableCollection`1" /> that represents a local view of all Added, Unchanged,
+            and Modified entities in this set.  This local view will stay in sync as entities are added or
+            removed from the context.  Likewise, entities added to or removed from the local view will automatically
+            be added to or removed from the context.
+            </summary>
+            <remarks>
+            This property can be used for data binding by populating the set with data, for example by using the Load
+            extension method, and then binding to the local data through this property.  For WPF bind to this property
+            directly.  For Windows Forms bind to the result of calling ToBindingList on this property
+            </remarks>
+            <value> The local view. </value>
+        </member>
+        <member name="T:DbManager.Entity.Interfaces.IDbTable">
+            <summary>
+            Read only and Undeletable DB table interface
+            </summary>
+        </member>
+        <member name="P:DbManager.Entity.Interfaces.IDbTable.id">
+            <summary>
+            row id
+            </summary>
+        </member>
+        <member name="P:DbManager.Entity.Interfaces.IDbTable.createdDate">
+            <summary>
+            row creation date
+            </summary>
+        </member>
+        <member name="M:DbManager.Entity.Interfaces.IDbTable.ValidateEntityState(System.Data.Entity.Infrastructure.DbEntityEntry,DbManager.DbTableContext)">
+            <summary>
+            validates entity state of entry
+            checks that entry id modified or deleted
+            </summary>
+            <param name="entry">entry of entity</param>
+            <param name="context">context of entry</param>
+            <returns>validation result</returns>
+        </member>
+        <member name="M:DbManager.Entity.Interfaces.IDbTable.ValidateEntityStateByPropertyManager(System.Data.Entity.Infrastructure.DbEntityEntry,DbManager.DbTableContext)">
+            <summary>
+            validates entity state of relational entries with this entry
+            </summary>
+            <param name="entry">entry of entity</param>
+            <param name="context">context of entry</param>
+            <returns></returns>
+        </member>
+        <member name="P:DbManager.Entity.Interfaces.IDbTable.modelType">
+            <summary>
+            child object type
+            </summary>
+        </member>
+        <member name="P:DbManager.Entity.Interfaces.IDbTable.modelName">
+            <summary>
+            child object class name
+            </summary>
+        </member>
+        <member name="P:DbManager.Entity.Interfaces.IDbTable.propertyManager">
+            <summary>
+            refernace of propertyMameger of modelType
+            </summary>
+        </member>
+        <member name="P:DbManager.Entity.Interfaces.IDbTable.isValidated">
+            <summary>
+            is entity is validated
+            </summary>
+        </member>
+        <member name="T:DbManager.Entity.Interfaces.IDbTablePropertyManager">
+            <summary>
+            interface definition of Db Table property manager
+            </summary>
+        </member>
+        <member name="M:DbManager.Entity.Interfaces.IDbTablePropertyManager.Init">
+            <summary>
+            initilize the foreignKey and Inverse properties relations
+            </summary>
+        </member>
+        <member name="M:DbManager.Entity.Interfaces.IDbTablePropertyManager.RegisterInverseProperty(System.Reflection.PropertyInfo,System.Type,System.String)">
+            <summary>
+            Registers inverse property of related entity
+            </summary>
+            <param name="propertyInfo">Info of property in related entity</param>
+            <param name="entityType">Type of related entity</param>
+            <param name="propertyName">name of Fk property</param>
+        </member>
+        <member name="M:DbManager.Entity.Interfaces.IDbTablePropertyManager.DeleteReferanceEntities(System.Object,DbManager.DbTableContext)">
+            <summary>
+            delete entities referanced by foreignKey and Inverse relationship
+            </summary>
+            <param name="entity">entity whose referanced entities will be deleted</param>
+            <param name="context">context that changes will be saved on</param>
+        </member>
+        <member name="M:DbManager.Entity.Interfaces.IDbTablePropertyManager.CheckEntityState(System.Data.Entity.Infrastructure.DbEntityEntry,DbManager.DbTableContext)">
+            <summary>
+            Checks the state of entity is suitable to save to context
+            </summary>
+            <param name="entityEntry">entry of entity</param>
+            <param name="context">context that entity will be saved on</param>
+        </member>
+        <member name="T:DbManager.Entity.Interfaces.IDbTableSet`1">
+            <summary>
+            Extended IDbSet to filter entity before using
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+        </member>
+        <member name="M:DbManager.Entity.Interfaces.IDbTableSet`1.ThrowIfEntityDoesNotMatchFilter(`0)">
+            <summary>
+            Checks the Entity is matching the filter
+            </summary>
+            <param name="entity"></param>
+        </member>
+        <member name="M:DbManager.Entity.Interfaces.IDbTableSet`1.ThrowIfEntitiesDoesNotMatchFilter(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Checks the Entities are matching the filter
+            </summary>
+            <param name="entities"></param>
+        </member>
+        <member name="T:DbManager.Entity.Interfaces.IDeletableDbTable">
+            <summary>
+            Modifiable and Deletable DB table interface
+            Deletable mean is that mark as deleted
+            </summary>
+        </member>
+        <member name="P:DbManager.Entity.Interfaces.IDeletableDbTable.isDeleted">
+            <summary>
+            is row marked as deleted 
+            </summary>
+        </member>
+        <member name="M:DbManager.Entity.Interfaces.IDeletableDbTable.MarkAsDeleted(DbManager.DbTableContext)">
+            <summary>
+            set row as deleted
+            </summary>
+        </member>
+        <member name="M:DbManager.Entity.Interfaces.IDeletableDbTable.MarkRelationalModelsAsDeleted">
+            <summary>
+            need to mark as deleted all relational tables 
+            ( InverseProperty, not froeing key)
+            </summary>
+        </member>
+        <member name="T:DbManager.Entity.Interfaces.SatisfyConditionFunctionDelegate`1">
+            <summary>
+            Condition function delegate which will check the given entity satisfies the conditions
+            </summary>
+            <param name="entity">the entity object whose state is checked </param>
+            <typeparam name="TEntity">generic type of entity which will derived from IDbTable</typeparam>
+        </member>
+        <member name="T:DbManager.Entity.Interfaces.IDeleteIfSatisfiedConditionOnCascadeAttribute">
+            <summary>
+            declaration of delete on cascade depends on codition attribute
+            </summary>
+        </member>
+        <member name="P:DbManager.Entity.Interfaces.IDeleteIfSatisfiedConditionOnCascadeAttribute.functionDelegate">
+            <summary>
+            Condition function which will check the given entity satisfies the conditions
+            </summary>
+        </member>
+        <member name="M:DbManager.Entity.Interfaces.IDeleteIfSatisfiedConditionOnCascadeAttribute.CheckConditionIsSatisfied(DbManager.Entity.Interfaces.IDbTable)">
+            <summary>
+            Invokes given function delegate with given entity
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="T:DbManager.Entity.Interfaces.IModifiableDbTable">
+            <summary>
+            Modifiable and Undeletable DB table interface
+            </summary>
+        </member>
+        <member name="P:DbManager.Entity.Interfaces.IModifiableDbTable.modifiedDate">
+            <summary>
+            row modified date
+            </summary>
+        </member>
+        <member name="T:DbManager.Entity.OperationResultMessages">
+            <summary>
+            constant operation result messages
+            </summary>
+        </member>
+        <member name="M:DbManager.DbTableContext.Set``1">
+            <summary>
+            Returns a <see cref="T:System.Data.Entity.DbSet`1" /> instance for access to entities of the given type in the context
+            and the underlying store.
+            </summary>
+            <remarks>
+            Note that Entity Framework requires that this method return the same instance each time that it is called
+            for a given context instance and entity type. Also, the non-generic <see cref="T:System.Data.Entity.DbSet" /> returned by the
+            <see cref="M:System.Data.Entity.DbContext.Set(System.Type)" /> method must wrap the same underlying query and set of entities. These invariants must
+            be maintained if this method is overridden for anything other than creating test doubles for unit testing.
+            See the <see cref="T:System.Data.Entity.DbSet`1" /> class for more details.
+            </remarks>
+            <typeparam name="TEntity"> The type entity for which a set should be returned. </typeparam>
+            <returns> A set for the given entity type. </returns>
+        </member>
+        <member name="M:DbManager.DbTableContext.SaveChanges">
+            <summary>
+            Saves all changes made in this context to the underlying database.
+            </summary>
+            <returns>
+            The number of state entries written to the underlying database. This can include
+            state entries for entities and/or relationships. Relationship state entries are created for
+            many-to-many relationships and relationships where there is no foreign key property
+            included in the entity class (often referred to as independent associations).
+            </returns>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateException">An error occurred sending updates to the database.</exception>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateConcurrencyException">
+            A database command did not affect the expected number of rows. This usually indicates an optimistic
+            concurrency violation; that is, a row has been changed in the database since it was queried.
+            </exception>
+            <exception cref="T:System.Data.Entity.Validation.DbEntityValidationException">
+            The save was aborted because validation of entity property values failed.
+            </exception>
+            <exception cref="T:System.NotSupportedException">
+            An attempt was made to use unsupported behavior such as executing multiple asynchronous commands concurrently
+            on the same context instance.</exception>
+            <exception cref="T:System.ObjectDisposedException">The context or connection have been disposed.</exception>
+            <exception cref="T:System.InvalidOperationException">
+            Some error occurred attempting to process entities in the context either before or after sending commands
+            to the database.
+            </exception>
+        </member>
+        <member name="M:DbManager.DbTableContext.SaveChangesAsync">
+            <summary>
+            Asynchronously saves all changes made in this context to the underlying database.
+            </summary>
+            <remarks>
+            Multiple active operations on the same context instance are not supported.  Use 'await' to ensure
+            that any asynchronous operations have completed before calling another method on this context.
+            </remarks>
+            <returns>
+            A task that represents the asynchronous save operation.
+            The task result contains the number of state entries written to the underlying database. This can include
+            state entries for entities and/or relationships. Relationship state entries are created for
+            many-to-many relationships and relationships where there is no foreign key property
+            included in the entity class (often referred to as independent associations).
+            </returns>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateException">An error occurred sending updates to the database.</exception>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateConcurrencyException">
+            A database command did not affect the expected number of rows. This usually indicates an optimistic
+            concurrency violation; that is, a row has been changed in the database since it was queried.
+            </exception>
+            <exception cref="T:System.Data.Entity.Validation.DbEntityValidationException">
+            The save was aborted because validation of entity property values failed.
+            </exception>
+            <exception cref="T:System.NotSupportedException">
+            An attempt was made to use unsupported behavior such as executing multiple asynchronous commands concurrently
+            on the same context instance.</exception>
+            <exception cref="T:System.ObjectDisposedException">The context or connection have been disposed.</exception>
+            <exception cref="T:System.InvalidOperationException">
+            Some error occurred attempting to process entities in the context either before or after sending commands
+            to the database.
+            </exception>
+        </member>
+        <member name="M:DbManager.DbTableContext.OnModelCreating(System.Data.Entity.DbModelBuilder)">
+            <summary>
+            This method is called when the model for a derived context has been initialized, but
+            before the model has been locked down and used to initialize the context.  The default
+            implementation of this method does nothing, but it can be overridden in a derived class
+            such that the model can be further configured before it is locked down.
+            </summary>
+            <remarks>
+            Typically, this method is called only once when the first instance of a derived context
+            is created.  The model for that context is then cached and is for all further instances of
+            the context in the app domain.  This caching can be disabled by setting the ModelCaching
+            property on the given ModelBuidler, but note that this can seriously degrade performance.
+            More control over caching is provided through use of the DbModelBuilder and DbContextFactory
+            classes directly.
+            </remarks>
+            <param name="modelBuilder"> The builder that defines the model for the context being created. </param>
+        </member>
+        <member name="M:DbManager.DbTableContext.ShouldValidateEntity(System.Data.Entity.Infrastructure.DbEntityEntry)">
+            <summary>
+            Extension point allowing the user to override the default behavior of validating only
+            added and modified entities.
+            </summary>
+            <param name="entityEntry"> DbEntityEntry instance that is supposed to be validated. </param>
+            <returns> true to proceed with validation; false otherwise. </returns>
+        </member>
+        <member name="M:DbManager.DbTableContext.ValidateEntity(System.Data.Entity.Infrastructure.DbEntityEntry,System.Collections.Generic.IDictionary{System.Object,System.Object})">
+            <summary>
+            Extension point allowing the user to customize validation of an entity or filter out validation results.
+            Called by <see cref="M:System.Data.Entity.DbContext.GetValidationErrors" />.
+            </summary>
+            <param name="entityEntry"> DbEntityEntry instance to be validated. </param>
+            <param name="items">
+            User-defined dictionary containing additional info for custom validation. It will be passed to
+            <see cref="T:System.ComponentModel.DataAnnotations.ValidationContext" />
+            and will be exposed as
+            <see cref="P:System.ComponentModel.DataAnnotations.ValidationContext.Items" />
+            . This parameter is optional and can be null.
+            </param>
+            <returns> Entity validation result. Possibly null when overridden. </returns>
+        </member>
+    </members>
+</doc>

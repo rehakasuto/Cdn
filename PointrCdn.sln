@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.168
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PointrCdn", "PointrCdn.csproj", "{2918DB3D-53DF-407F-A4C0-CE1F2BDBD09C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		aimia.debug|Any CPU = aimia.debug|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		hkland.debug|Any CPU = hkland.debug|Any CPU
+		ikea.debug|Any CPU = ikea.debug|Any CPU
+		itower.debug|Any CPU = itower.debug|Any CPU
+		local.debug|Any CPU = local.debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2918DB3D-53DF-407F-A4C0-CE1F2BDBD09C}.aimia.debug|Any CPU.ActiveCfg = aimia.debug|Any CPU
+		{2918DB3D-53DF-407F-A4C0-CE1F2BDBD09C}.aimia.debug|Any CPU.Build.0 = aimia.debug|Any CPU
+		{2918DB3D-53DF-407F-A4C0-CE1F2BDBD09C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2918DB3D-53DF-407F-A4C0-CE1F2BDBD09C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2918DB3D-53DF-407F-A4C0-CE1F2BDBD09C}.hkland.debug|Any CPU.ActiveCfg = hkland.debug|Any CPU
+		{2918DB3D-53DF-407F-A4C0-CE1F2BDBD09C}.hkland.debug|Any CPU.Build.0 = hkland.debug|Any CPU
+		{2918DB3D-53DF-407F-A4C0-CE1F2BDBD09C}.ikea.debug|Any CPU.ActiveCfg = ikea.debug|Any CPU
+		{2918DB3D-53DF-407F-A4C0-CE1F2BDBD09C}.ikea.debug|Any CPU.Build.0 = ikea.debug|Any CPU
+		{2918DB3D-53DF-407F-A4C0-CE1F2BDBD09C}.itower.debug|Any CPU.ActiveCfg = itower.debug|Any CPU
+		{2918DB3D-53DF-407F-A4C0-CE1F2BDBD09C}.itower.debug|Any CPU.Build.0 = itower.debug|Any CPU
+		{2918DB3D-53DF-407F-A4C0-CE1F2BDBD09C}.local.debug|Any CPU.ActiveCfg = local.debug|Any CPU
+		{2918DB3D-53DF-407F-A4C0-CE1F2BDBD09C}.local.debug|Any CPU.Build.0 = local.debug|Any CPU
+		{2918DB3D-53DF-407F-A4C0-CE1F2BDBD09C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2918DB3D-53DF-407F-A4C0-CE1F2BDBD09C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6C98BE59-5F24-4E3C-98D0-83E17D3EA608}
+	EndGlobalSection
+EndGlobal
